@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensaje de Cumpleaños Romántico</title>
+    <!-- Vinculamos Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJfM7nJ5WfG6OXvPI5ghX91r0Zgk85cwbzRAz7dR6OTwpVqUnq6mJZcmSSlE" crossorigin="anonymous">
+    <!-- Estilos adicionales -->
+    <style>
+        /* Pantalla completa */
+        .full-screen {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            background-color: #f9c6e5;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Cuadro de mensaje */
+        .message-box {
+            width: 90%;
+            max-width: 500px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            padding: 30px;
+            border: 2px solid #d63f6e;
+            border-radius: 10px;
+            background-color: rgba(214, 63, 110, 0.8);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            margin-bottom: 30px;
+            display: none; /* Oculto inicialmente */
+        }
+
+        /* Botón en forma de corazón */
+        .heart-button {
+            position: relative;
+            background-color: #d63f6e;
+            color: white;
+            font-size: 1.5rem;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            outline: none;
+            transition: transform 0.3s ease;
+            font-weight: bold;
+        }
+
+        .heart-button:before,
+        .heart-button:after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #d63f6e;
+            top: -10px;
+        }
+
+        .heart-button:before {
+            left: 0;
+            transform: rotate(-45deg);
+        }
+
+        .heart-button:after {
+            right: 0;
+            transform: rotate(45deg);
+        }
+
+        .heart-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Cuadro de imágenes */
+        .image-box {
+            width: 90%;
+            max-width: 500px;
+            height: 300px;
+            border: 2px solid #d63f6e;
+            border-radius: 10px;
+            position: relative;
+            z-index: 5;
+            background-color: rgba(214, 63, 110, 0.7);
+            display: none; /* Oculto inicialmente */
+            overflow: hidden;
+        }
+
+        /* Contenedor de imágenes */
+        .image-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ajusta la imagen a todo el cuadro sin deformarla */
+            opacity: 0.7;
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* Estrellas alrededor del mensaje */
+        .star {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: #d63f6e;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            opacity: 0.8;
+            animation: twinkle 1.5s infinite alternate;
+        }
+
+        .star:nth-child(1) { top: 10%; left: 15%; }
+        .star:nth-child(2) { top: 20%; left: 80%; }
+        .star:nth-child(3) { top: 25%; left: 40%; }
+        .star:nth-child(4) { top: 60%; left: 50%; }
+        .star:nth-child(5) { top: 50%; left: 20%; }
+        .star:nth-child(6) { top: 30%; left: 60%; }
+        .star:nth-child(7) { top: 70%; left: 80%; }
+        .star:nth-child(8) { top: 40%; left: 10%; }
+        .star:nth-child(9) { top: 10%; left: 70%; }
+        .star:nth-child(10) { top: 80%; left: 30%; }
+        .star:nth-child(11) { top: 50%; left: 40%; }
+        .star:nth-child(12) { top: 25%; left: 10%; }
+        .star:nth-child(13) { top: 10%; left: 50%; }
+        .star:nth-child(14) { top: 60%; left: 30%; }
+        .star:nth-child(15) { top: 75%; left: 20%; }
+        .star:nth-child(16) { top: 85%; left: 60%; }
+        .star:nth-child(17) { top: 35%; left: 80%; }
+        .star:nth-child(18) { top: 50%; left: 70%; }
+        .star:nth-child(19) { top: 80%; left: 80%; }
+        .star:nth-child(20) { top: 30%; left: 50%; }
+        .star:nth-child(21) { top: 45%; left: 10%; }
+        .star:nth-child(22) { top: 60%; left: 15%; }
+        .star:nth-child(23) { top: 15%; left: 75%; }
+        .star:nth-child(24) { top: 65%; left: 25%; }
+        .star:nth-child(25) { top: 30%; left: 85%; }
+        .star:nth-child(26) { top: 75%; left: 40%; }
+        .star:nth-child(27) { top: 85%; left: 50%; }
+        .star:nth-child(28) { top: 55%; left: 70%; }
+        .star:nth-child(29) { top: 35%; left: 90%; }
+        .star:nth-child(30) { top: 20%; left: 20%; }
+        .star:nth-child(31) { top: 40%; left: 40%; }
+        .star:nth-child(32) { top: 25%; left: 60%; }
+        .star:nth-child(33) { top: 80%; left: 10%; }
+        .star:nth-child(34) { top: 50%; left: 60%; }
+        .star:nth-child(35) { top: 65%; left: 80%; }
+        .star:nth-child(36) { top: 10%; left: 30%; }
+        .star:nth-child(37) { top: 45%; left: 55%; }
+        .star:nth-child(38) { top: 25%; left: 90%; }
+        .star:nth-child(39) { top: 30%; left: 40%; }
+        .star:nth-child(40) { top: 70%; left: 60%; }
+
+        @keyframes twinkle {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .image-container img {
+                width: 100%;
+                height: 100%;
+            }
+            .message-box {
+                width: 100%;
+                padding: 15px;
+                font-size: 1.2rem;
+            }
+            .image-box {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="full-screen">
+        <!-- Botón para mostrar el mensaje -->
+        <button class="heart-button" id="showMessageBtn">💖</button>
+
+        <!-- Cuadro de mensaje -->
+        <div id="birthdayMessage" class="message-box">
+            <p>¡Feliz cumpleaños! 🎉</p>
+            <p>Me alegra muchísimo poder compartir este día contigo. Eres una persona increíble, y realmente espero que este nuevo año de tu vida esté lleno de momentos maravillosos. ¡Te deseo lo mejor hoy y siempre! 🎂✨</p>
+        </div>
+
+        <!-- Cuadro de imágenes -->
+        <div id="imageBox" class="image-box">
+            <div class="image-container" id="imageContainer">
+                <!-- Aquí aparecerá una imagen a la vez -->
+            </div>
+        </div>
+
+        <!-- Estrellas alrededor del mensaje -->
+        <div id="stars-container">
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+        </div>
+    </div>
+
+    <audio id="birthdaySong" preload="auto">
+        <source src="las-mañanitas-letra--lyrics.mp3" type="audio/mp3">
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <script>
+        // Función para agregar una imagen de manera rotativa
+        let currentImageIndex = 0;
+        const images = [
+            'https://cdn.teleticket.com.pe/especiales/emilia-mernes-2022/images/fme007_rs.jpg',
+            'https://images.squarespace-cdn.com/content/v1/559eccfee4b00d2e10134185/1531404673870-HXUGEIWVSOPICN0NTVJA/cnco1.jpeg', 
+            'https://cdn.elpopular.mx/notas/secciones/hello/2019/08/10/feliz-cumpleanos-snoopy-el-beagle-cumple-71-anos/938aaa5e8cd7ef60211c99244a43c43a.png',
+            'https://upload.wikimedia.org/wikipedia/commons/5/58/Sunset_2007-1.jpg'
+        ];
+
+        function showNextImage() {
+            const container = document.getElementById('imageContainer');
+            const img = document.createElement('img');
+            img.src = images[currentImageIndex];
+            container.innerHTML = ''; // Limpiar imagen anterior
+            container.appendChild(img);
+
+            currentImageIndex = (currentImageIndex + 1) % images.length; // Cambiar a la siguiente imagen
+        }
+
+        // Función para mostrar el mensaje y reproducir música
+        document.getElementById('showMessageBtn').addEventListener('click', function() {
+            const messageDiv = document.getElementById('birthdayMessage');
+            const button = document.getElementById('showMessageBtn');
+            const audio = document.getElementById('birthdaySong');
+            const imageBox = document.getElementById('imageBox');
+            const starsContainer = document.getElementById('stars-container');
+
+            // Mostrar mensaje, estrellas e imagen
+            button.style.display = 'none';
+
+            messageDiv.style.display = 'block';
+            imageBox.style.display = 'block';
+            starsContainer.style.display = 'block'; // Mostrar las estrellas
+
+            setTimeout(function() {
+                messageDiv.style.display = 'block';
+            }, 100);
+
+            audio.play();
+
+            // Generar confeti
+            confetti({
+                particleCount: 100,
+                spread: 90,
+                origin: { x: 0.5, y: 0.5 },
+                colors: ['#d63f6e', '#ff9a8b', '#fff']
+            });
+
+            // Iniciar imágenes rotativas
+            showNextImage();
+            setInterval(showNextImage, 5000); // Cambiar imagen cada 5 segundos
+        });
+    </script>
+</body>
+</html>
